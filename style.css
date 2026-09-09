@@ -104,3 +104,14 @@ button:hover {
 .player-cost {
     font-weight: bold;
 }
+.delete-btn {
+    background-color: #d32f2f;
+    color: white;
+    font-size: 11px;
+    padding: 3px 8px;
+    margin-top: 4px;
+}
+
+.delete-btn:hover {
+    background-color: #9a0007;
+}
