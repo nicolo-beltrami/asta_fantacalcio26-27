@@ -17,7 +17,7 @@ function addTeam() {
 }
 
 function removeTeam(index) {
-    if (confirm(`Sei sicuro di voler eliminare la squadra "${teams[index].name}"?`)) {
+    if (confirm(`Sei sicuro di voler eliminare "${teams[index].name}"?`)) {
         teams.splice(index, 1);
         updateUI();
     }
@@ -30,14 +30,14 @@ function buyPlayer() {
     const cost = parseInt(document.getElementById('playerCost').value);
 
     if (teamIndex === "" || !name || isNaN(cost) || cost <= 0) {
-        alert("Inserisci tutti i dati correttamente!");
+        alert("Inserisci correttamente tutti i dati dell'acquisto.");
         return;
     }
 
     const team = teams[teamIndex];
 
     if (team.credits < cost) {
-        alert("Crediti insufficienti per questa squadra!");
+        alert("Crediti insufficienti!");
         return;
     }
 
@@ -54,7 +54,7 @@ function updateUI() {
     const select = document.getElementById('selectTeam');
     const container = document.getElementById('teamsContainer');
     
-    // Aggiorna Select
+    // Aggiorna Selettore
     const currentSelectValue = select.value;
     select.innerHTML = '<option value="">Seleziona Squadra</option>';
     teams.forEach((team, index) => {
@@ -65,7 +65,7 @@ function updateUI() {
     });
     select.value = currentSelectValue;
 
-    // Aggiorna Griglia Squadre
+    // Aggiorna Griglia Card
     container.innerHTML = '';
     teams.forEach((team, index) => {
         const card = document.createElement('div');
@@ -74,10 +74,10 @@ function updateUI() {
         let html = `
             <div class="team-header">
                 <div>
-                    <h3>${team.name}</h3>
-                    <button class="delete-btn" onclick="removeTeam(${index})">Elimina Squadra</button>
+                    <div class="team-name">${team.name}</div>
+                    <button class="delete-btn" onclick="removeTeam(${index})">Elimina squadra</button>
                 </div>
-                <span class="credits">${team.credits} FM</span>
+                <div class="credits-badge">${team.credits} <small style="font-size:10px; font-weight:normal;">CR</small></div>
             </div>
         `;
 
@@ -89,10 +89,25 @@ function updateUI() {
         ];
 
         roles.forEach(role => {
-            html += `<div class="role-section"><div class="role-title">${role.label} (${team.players[role.key].length})</div><ul class="player-list">`;
-            team.players[role.key].forEach(player => {
-                html += `<li class="player-item"><span>${player.name}</span><span class="player-cost">${player.cost} cr</span></li>`;
+            const playerList = team.players[role.key];
+            html += `
+                <div class="role-section">
+                    <div class="role-header">
+                        <span class="role-badge badge-${role.key}">${role.key}</span>
+                        <span>${role.label} (${playerList.length})</span>
+                    </div>
+                    <ul class="player-list">
+            `;
+            
+            playerList.forEach(player => {
+                html += `
+                    <li class="player-item">
+                        <span class="player-name">${player.name}</span>
+                        <span class="player-cost">${player.cost} cr</span>
+                    </li>
+                `;
             });
+
             html += `</ul></div>`;
         });
 
