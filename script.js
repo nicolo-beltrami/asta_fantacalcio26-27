@@ -16,6 +16,13 @@ function addTeam() {
     updateUI();
 }
 
+function removeTeam(index) {
+    if (confirm(`Sei sicuro di voler eliminare la squadra "${teams[index].name}"?`)) {
+        teams.splice(index, 1);
+        updateUI();
+    }
+}
+
 function buyPlayer() {
     const teamIndex = document.getElementById('selectTeam').value;
     const name = document.getElementById('playerName').value.trim();
@@ -60,13 +67,16 @@ function updateUI() {
 
     // Aggiorna Griglia Squadre
     container.innerHTML = '';
-    teams.forEach((team) => {
+    teams.forEach((team, index) => {
         const card = document.createElement('div');
         card.className = 'team-card';
         
         let html = `
             <div class="team-header">
-                <h3>${team.name}</h3>
+                <div>
+                    <h3>${team.name}</h3>
+                    <button class="delete-btn" onclick="removeTeam(${index})">Elimina Squadra</button>
+                </div>
                 <span class="credits">${team.credits} FM</span>
             </div>
         `;
