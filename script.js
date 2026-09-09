@@ -81,7 +81,8 @@ function onPlayerInput(val) {
 // Chiudi la tendina se si clicca fuori
 document.addEventListener('click', function (e) {
     if (!e.target.closest('.autocomplete-wrapper')) {
-        document.getElementById('autocompleteList').innerHTML = '';
+        const list = document.getElementById('autocompleteList');
+        if (list) list.innerHTML = '';
     }
 });
 
@@ -145,7 +146,7 @@ function setViewMode(mode) {
     document.getElementById('btnCardsView').classList.toggle('active', mode === 'cards');
     document.getElementById('btnCompactView').classList.toggle('active', mode === 'compact');
     
-    document.getElementById('teamsContainer').style.display = mode === 'cards' ? 'grid' : 'none';
+    document.getElementById('teamsContainer').style.display = mode === 'cards' ? 'flex' : 'none';
     document.getElementById('compactContainer').style.display = mode === 'compact' ? 'block' : 'none';
     
     updateUI();
@@ -202,16 +203,17 @@ function resetAll() {
 
 function updateUI() {
     const select = document.getElementById('selectTeam');
-    const currentSelectValue = select.value;
-    
-    select.innerHTML = '<option value="">Seleziona Squadra</option>';
-    teams.forEach((team, index) => {
-        const option = document.createElement('option');
-        option.value = index;
-        option.textContent = team.name;
-        select.appendChild(option);
-    });
-    select.value = currentSelectValue;
+    if (select) {
+        const currentSelectValue = select.value;
+        select.innerHTML = '<option value="">Seleziona Squadra</option>';
+        teams.forEach((team, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = team.name;
+            select.appendChild(option);
+        });
+        select.value = currentSelectValue;
+    }
 
     if (currentViewMode === 'cards') {
         renderCardsView();
@@ -222,6 +224,7 @@ function updateUI() {
 
 function renderCardsView() {
     const container = document.getElementById('teamsContainer');
+    if (!container) return;
     container.innerHTML = '';
 
     teams.forEach((team, teamIndex) => {
@@ -232,7 +235,7 @@ function renderCardsView() {
             <div class="team-header">
                 <div>
                     <div class="team-name">${team.name}</div>
-                    <button class="delete-btn" onclick="removeTeam(${teamIndex})">Elimina squadra</button>
+                    <button class="delete-btn" style="color:var(--danger); background:none; border:none; cursor:pointer; font-size:11px; padding:0;" onclick="removeTeam(${teamIndex})">Elimina squadra</button>
                 </div>
                 <div class="credits-badge">${team.credits} <small style="font-size:10px; font-weight:normal;">CR</small></div>
             </div>
@@ -249,7 +252,6 @@ function renderCardsView() {
             const playerList = team.players[role.key];
             const maxSlot = ROLE_SLOTS[role.key];
             
-            // Calcolo spesa totale per questo ruolo
             const spentInRole = playerList.reduce((sum, p) => sum + p.cost, 0);
             const spentPercentage = Math.round((spentInRole / INITIAL_CREDITS) * 100);
 
@@ -257,11 +259,10 @@ function renderCardsView() {
                 <div class="role-section">
                     <div class="role-header" onclick="toggleRole(this)">
                         <div style="display:flex; align-items:center; gap:8px;">
-                            <span class="role-badge badge-${role.key}">${role.key}</span>
                             <span>${role.label} (${playerList.length}/${maxSlot})</span>
                         </div>
                         <div style="display:flex; align-items:center; gap:8px;">
-                            <span class="role-spent-percentage">${spentPercentage}%</span>
+                            <span>${spentPercentage}%</span>
                             <span class="arrow-icon">▼</span>
                         </div>
                     </div>
@@ -277,13 +278,13 @@ function renderCardsView() {
 
                     html += `
                         <li class="player-item">
-                            <div class="player-info">
+                            <div class="player-info" style="display:flex; align-items:center; gap:6px;">
                                 ${logoHtml}
                                 <span class="player-name">${player.name}</span>
                             </div>
                             <div style="display:flex; align-items:center; gap:8px;">
-                                <span class="player-cost">${player.cost} cr</span>
-                                <span class="remove-player-btn" title="Svincola" onclick="event.stopPropagation(); removePlayer(${teamIndex}, '${role.key}', ${playerIndex})">✕</span>
+                                <span class="player-cost" style="font-weight:bold;">${player.cost} cr</span>
+                                <span title="Svincola" style="cursor:pointer; color:var(--danger);" onclick="event.stopPropagation(); removePlayer(${teamIndex}, '${role.key}', ${playerIndex})">✕</span>
                             </div>
                         </li>
                     `;
@@ -300,6 +301,8 @@ function renderCardsView() {
 
 function renderCompactView() {
     const container = document.getElementById('compactContainer');
+    if (!container) return;
+
     if (teams.length === 0) {
         container.innerHTML = '<p style="color:var(--text-muted); text-align:center;">Nessuna squadra presente.</p>';
         return;
@@ -307,26 +310,42 @@ function renderCompactView() {
 
     let html = `<table class="compact-table"><thead><tr>`;
     
-    // Intestazioni squadre
+    // Intestazioni squadre affiancate
     teams.forEach(t => {
-        html += `<th>${t.name}<br><small style="color:var(--success); font-weight:normal;">${t.credits} CR rimasti</small></th>`;
+        html += `<th>
+            <div style="font-size: 13px; font-weight:bold;">${t.name}</div>
+            <small style="color:var(--success); font-weight:bold;">${t.credits} CR rimasti</small>
+        </th>`;
     });
     html += `</tr></thead><tbody><tr>`;
 
     // Contenuto colonne
-    teams.forEach((team, teamIndex) => {
+    teams.forEach((team) => {
         html += `<td>`;
         ['P', 'D', 'C', 'A'].forEach(role => {
             const players = team.players[role];
-            html += `<div style="font-weight:bold; font-size:11px; margin-top:6px; color:var(--text-muted);">${role} (${players.length})</div>`;
-            players.forEach((p, playerIndex) => {
-                const logoUrl = getLogoUrl(p.team);
-                const logoHtml = logoUrl ? `<img src="${logoUrl}" class="team-logo" style="width:14px;height:14px;" onerror="this.style.display='none'">` : '';
-                html += `<div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:2px;">
-                    <span>${logoHtml} ${p.name}</span>
-                    <span style="font-weight:bold; margin-left:6px;">${p.cost}cr</span>
-                </div>`;
-            });
+            const maxSlot = ROLE_SLOTS[role];
+            
+            html += `<div style="font-weight:bold; font-size:10px; margin-top:8px; margin-bottom:4px; color:var(--text-muted); border-bottom: 1px solid var(--border); display:flex; justify-content:space-between;">
+                <span>${role}</span>
+                <span>(${players.length}/${maxSlot})</span>
+            </div>`;
+
+            if (players.length === 0) {
+                html += `<div style="font-style:italic; color:#94a3b8; font-size:10px; margin-bottom:2px;">-</div>`;
+            } else {
+                players.forEach((p) => {
+                    const logoUrl = getLogoUrl(p.team);
+                    const logoHtml = logoUrl ? `<img src="${logoUrl}" class="team-logo" style="width:12px;height:12px; margin-right:3px;" onerror="this.style.display='none'">` : '';
+                    
+                    html += `<div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-bottom:3px; gap:4px;">
+                        <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:95px;" title="${p.name}">
+                            ${logoHtml}${p.name}
+                        </span>
+                        <span style="font-weight:bold; color:var(--success); font-size:10px;">${p.cost}</span>
+                    </div>`;
+                });
+            }
         });
         html += `</td>`;
     });
