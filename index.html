@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fantastats Pro - Asta Fantacalcio</title>
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
     <header>
@@ -15,13 +15,16 @@
         </div>
     </header>
 
-    <!-- Toolbar: Ricerca, Esportazione e Reset -->
     <div class="toolbar">
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="🔍 Cerca calciatore acquistato..." onkeyup="searchPlayers()">
         </div>
+        <div class="view-toggle">
+            <button class="btn-secondary active" id="btnCardsView" onclick="setViewMode('cards')">📱 Vista Schede</button>
+            <button class="btn-secondary" id="btnCompactView" onclick="setViewMode('compact')">📊 Vista Compatta</button>
+        </div>
         <div class="actions-box">
-            <button class="btn-secondary" onclick="exportToCSV()">📥 Esporta in CSV</button>
+            <button class="btn-secondary" onclick="exportToCSV()">📥 Esporta CSV</button>
             <button class="btn-danger" onclick="resetAll()">🗑️ Azzera Tutto</button>
         </div>
     </div>
@@ -30,7 +33,14 @@
         <h2>Registra Nuovo Acquisto</h2>
         <div class="form-group">
             <select id="selectTeam"><option value="">Seleziona Squadra</option></select>
-            <input type="text" id="playerName" placeholder="Nome Calciatore">
+            
+            <!-- Box Input con Autocompletamento -->
+            <div class="autocomplete-wrapper">
+                <input type="text" id="playerName" placeholder="Cerca o inserisci calciatore..." oninput="onPlayerInput(this.value)">
+                <div id="autocompleteList" class="autocomplete-items"></div>
+            </div>
+
+            <!-- Campo Ruolo (Compilato in automatico o manuale) -->
             <select id="playerRole">
                 <option value="P">Portiere (P)</option>
                 <option value="D">Difensore (D)</option>
@@ -42,8 +52,13 @@
         </div>
     </div>
 
+    <!-- Contenitore della vista a schede (default) -->
     <main id="teamsContainer" class="teams-container"></main>
 
+    <!-- Contenitore della vista compatta (stile tabella Excel) -->
+    <div id="compactContainer" class="compact-container" style="display: none;"></div>
+
+    <script src="players.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
