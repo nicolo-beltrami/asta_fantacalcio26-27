@@ -1,3 +1,10 @@
+// Funzione per generare il percorso del logo
+function getLogoUrl(team) {
+    if (!team) return '';
+    const teamFilename = team.toLowerCase() === "como" ? "como-1907" : team.toLowerCase();
+    return `logos/italy_${teamFilename}_3000x3000.football-logos.cc.png`;
+}
+
 const ROLE_SLOTS = { P: 3, D: 8, C: 8, A: 6 };
 const INITIAL_CREDITS = 500;
 
@@ -49,7 +56,8 @@ function onPlayerInput(val) {
         const item = document.createElement('div');
         item.className = 'autocomplete-item';
         
-        const logoHtml = player.team ? `<img src="logos/${player.team}.png" class="team-logo" onerror="this.style.display='none'">` : '';
+        const logoUrl = getLogoUrl(player.team);
+        const logoHtml = logoUrl ? `<img src="${logoUrl}" class="team-logo" onerror="this.style.display='none'">` : '';
 
         item.innerHTML = `
             ${logoHtml}
@@ -264,7 +272,8 @@ function renderCardsView() {
                 html += `<li class="player-item" style="color:var(--text-muted); font-style:italic;">Nessun acquisto</li>`;
             } else {
                 playerList.forEach((player, playerIndex) => {
-                    const logoHtml = player.team ? `<img src="logos/${player.team}.png" class="team-logo" onerror="this.style.display='none'">` : '';
+                    const logoUrl = getLogoUrl(player.team);
+                    const logoHtml = logoUrl ? `<img src="${logoUrl}" class="team-logo" onerror="this.style.display='none'">` : '';
 
                     html += `
                         <li class="player-item">
@@ -311,8 +320,9 @@ function renderCompactView() {
             const players = team.players[role];
             html += `<div style="font-weight:bold; font-size:11px; margin-top:6px; color:var(--text-muted);">${role} (${players.length})</div>`;
             players.forEach((p, playerIndex) => {
-                const logoHtml = p.team ? `<img src="logos/${p.team}.png" class="team-logo" style="width:14px;height:14px;" onerror="this.style.display='none'">` : '';
-                html += `<div style="display:flex; justify-between; align-items:center; font-size:12px; margin-bottom:2px;">
+                const logoUrl = getLogoUrl(p.team);
+                const logoHtml = logoUrl ? `<img src="${logoUrl}" class="team-logo" style="width:14px;height:14px;" onerror="this.style.display='none'">` : '';
+                html += `<div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:2px;">
                     <span>${logoHtml} ${p.name}</span>
                     <span style="font-weight:bold; margin-left:6px;">${p.cost}cr</span>
                 </div>`;
