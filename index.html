@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asta Fantacalcio Pro</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Fantastats Pro - Asta Fantacalcio</title>
+    <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
     <header>
@@ -14,6 +14,17 @@
             <button class="btn-primary" onclick="addTeam()">+ Crea Squadra</button>
         </div>
     </header>
+
+    <!-- Toolbar: Ricerca, Esportazione e Reset -->
+    <div class="toolbar">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Cerca calciatore acquistato..." onkeyup="searchPlayers()">
+        </div>
+        <div class="actions-box">
+            <button class="btn-secondary" onclick="exportToCSV()">📥 Esporta in CSV</button>
+            <button class="btn-danger" onclick="resetAll()">🗑️ Azzera Tutto</button>
+        </div>
+    </div>
 
     <div class="auction-panel">
         <h2>Registra Nuovo Acquisto</h2>
