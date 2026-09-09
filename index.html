@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asta Fantacalcio</title>
+    <title>Asta Fantacalcio Pro</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>🏆 Dashboard Asta Fantacalcio 🏆</h1>
+        <h1>⚽ Fantastats Pro</h1>
         <div class="setup-panel">
             <input type="text" id="newTeamName" placeholder="Nome Squadra">
-            <button onclick="addTeam()">+ Aggiungi Squadra</button>
+            <button class="btn-primary" onclick="addTeam()">+ Crea Squadra</button>
         </div>
     </header>
 
     <div class="auction-panel">
-        <h2>Registra Acquisto</h2>
+        <h2>Registra Nuovo Acquisto</h2>
         <div class="form-group">
             <select id="selectTeam"><option value="">Seleziona Squadra</option></select>
-            <input type="text" id="playerName" placeholder="Nome Giocatore">
+            <input type="text" id="playerName" placeholder="Nome Calciatore">
             <select id="playerRole">
                 <option value="P">Portiere (P)</option>
                 <option value="D">Difensore (D)</option>
@@ -27,7 +27,7 @@
                 <option value="A">Attaccante (A)</option>
             </select>
             <input type="number" id="playerCost" placeholder="Crediti" min="1">
-            <button onclick="buyPlayer()">Acquista</button>
+            <button class="btn-primary" onclick="buyPlayer()">Conferma Acquisto</button>
         </div>
     </div>
 
