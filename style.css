@@ -12,7 +12,6 @@
     --text-muted: #64748b;
     --border: #e2e8f0;
     
-    /* Colori Ruoli */
     --role-p: #d97706;
     --role-d: #16a34a;
     --role-c: #2563eb;
@@ -34,7 +33,6 @@ body {
     margin: 0 auto;
 }
 
-/* Header Principale */
 header {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     color: white;
@@ -53,6 +51,7 @@ header h1 {
     font-size: 24px;
     font-weight: 700;
     letter-spacing: -0.5px;
+    color: white;
 }
 
 .setup-panel {
@@ -60,7 +59,6 @@ header h1 {
     gap: 10px;
 }
 
-/* Form Generici */
 input, select {
     padding: 10px 14px;
     border: 1px solid var(--border);
@@ -92,7 +90,6 @@ header input:focus {
     box-shadow: none;
 }
 
-/* Pulsanti */
 button {
     padding: 10px 18px;
     border-radius: 8px;
@@ -113,7 +110,6 @@ button {
     transform: translateY(-1px);
 }
 
-/* Dashboard Registrazione Acquisto */
 .auction-panel {
     background: var(--bg-card);
     padding: 20px 24px;
@@ -143,14 +139,12 @@ button {
     min-width: 140px;
 }
 
-/* Griglia Squadre */
 .teams-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 20px;
 }
 
-/* Card Squadra */
 .team-card {
     background: var(--bg-card);
     border-radius: 12px;
@@ -186,7 +180,6 @@ button {
     border: 1px solid #dcfce7;
 }
 
-/* Sezioni Ruolo */
 .role-section {
     margin-top: 8px;
 }
