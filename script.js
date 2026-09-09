@@ -8,8 +8,16 @@ function getLogoUrl(team) {
 const ROLE_SLOTS = { P: 3, D: 8, C: 8, A: 6 };
 const INITIAL_CREDITS = 500;
 
+// Mappatura colori in formato RGB per la vista compatta
+const ROLE_COLORS = {
+    P: { bg: '#fef9c3', text: '#854d0e', badge: 'var(--role-p)' }, // Giallo
+    D: { bg: '#dcfce7', text: '#166534', badge: 'var(--role-d)' }, // Verde
+    C: { bg: '#e0f2fe', text: '#075985', badge: 'var(--role-c)' }, // Azzurro
+    A: { bg: '#fee2e2', text: '#991b1b', badge: 'var(--role-a)' }  // Rosso
+};
+
 let teams = JSON.parse(localStorage.getItem('fanta_teams')) || [];
-let currentViewMode = 'cards'; // 'cards' oppure 'compact'
+let currentViewMode = 'cards';
 let selectedPlayerFromDb = null;
 
 function saveToLocalStorage() {
@@ -78,7 +86,6 @@ function onPlayerInput(val) {
     });
 }
 
-// Chiudi la tendina se si clicca fuori
 document.addEventListener('click', function (e) {
     if (!e.target.closest('.autocomplete-wrapper')) {
         const list = document.getElementById('autocompleteList');
@@ -235,7 +242,7 @@ function renderCardsView() {
             <div class="team-header">
                 <div>
                     <div class="team-name">${team.name}</div>
-                    <button class="delete-btn" style="color:var(--danger); background:none; border:none; cursor:pointer; font-size:11px; padding:0;" onclick="removeTeam(${teamIndex})">Elimina squadra</button>
+                    <button class="delete-btn" onclick="removeTeam(${teamIndex})">Elimina squadra</button>
                 </div>
                 <div class="credits-badge">${team.credits} <small style="font-size:10px; font-weight:normal;">CR</small></div>
             </div>
@@ -259,10 +266,11 @@ function renderCardsView() {
                 <div class="role-section">
                     <div class="role-header" onclick="toggleRole(this)">
                         <div style="display:flex; align-items:center; gap:8px;">
+                            <span class="role-badge badge-${role.key}">${role.key}</span>
                             <span>${role.label} (${playerList.length}/${maxSlot})</span>
                         </div>
                         <div style="display:flex; align-items:center; gap:8px;">
-                            <span>${spentPercentage}%</span>
+                            <span class="role-spent-percentage">${spentPercentage}%</span>
                             <span class="arrow-icon">▼</span>
                         </div>
                     </div>
@@ -278,13 +286,13 @@ function renderCardsView() {
 
                     html += `
                         <li class="player-item">
-                            <div class="player-info" style="display:flex; align-items:center; gap:6px;">
+                            <div class="player-info">
                                 ${logoHtml}
                                 <span class="player-name">${player.name}</span>
                             </div>
                             <div style="display:flex; align-items:center; gap:8px;">
-                                <span class="player-cost" style="font-weight:bold;">${player.cost} cr</span>
-                                <span title="Svincola" style="cursor:pointer; color:var(--danger);" onclick="event.stopPropagation(); removePlayer(${teamIndex}, '${role.key}', ${playerIndex})">✕</span>
+                                <span class="player-cost">${player.cost} cr</span>
+                                <span class="remove-player-btn" title="Svincola" onclick="event.stopPropagation(); removePlayer(${teamIndex}, '${role.key}', ${playerIndex})">✕</span>
                             </div>
                         </li>
                     `;
@@ -310,39 +318,38 @@ function renderCompactView() {
 
     let html = `<table class="compact-table"><thead><tr>`;
     
-    // Intestazioni squadre affiancate
     teams.forEach(t => {
         html += `<th>
-            <div style="font-size: 13px; font-weight:bold;">${t.name}</div>
-            <small style="color:var(--success); font-weight:bold;">${t.credits} CR rimasti</small>
+            <div style="font-size: 14px; font-weight:bold; color:var(--primary);">${t.name}</div>
+            <small style="color:var(--success); font-weight:bold;">${t.credits} CR</small>
         </th>`;
     });
     html += `</tr></thead><tbody><tr>`;
 
-    // Contenuto colonne
     teams.forEach((team) => {
         html += `<td>`;
         ['P', 'D', 'C', 'A'].forEach(role => {
             const players = team.players[role];
             const maxSlot = ROLE_SLOTS[role];
+            const color = ROLE_COLORS[role];
             
-            html += `<div style="font-weight:bold; font-size:10px; margin-top:8px; margin-bottom:4px; color:var(--text-muted); border-bottom: 1px solid var(--border); display:flex; justify-content:space-between;">
+            html += `<div style="background-color:${color.bg}; color:${color.text}; font-weight:bold; font-size:11px; padding:3px 6px; border-radius:4px; margin-top:8px; margin-bottom:4px; display:flex; justify-content:space-between; align-items:center;">
                 <span>${role}</span>
-                <span>(${players.length}/${maxSlot})</span>
+                <span>${players.length}/${maxSlot}</span>
             </div>`;
 
             if (players.length === 0) {
-                html += `<div style="font-style:italic; color:#94a3b8; font-size:10px; margin-bottom:2px;">-</div>`;
+                html += `<div style="font-style:italic; color:#94a3b8; font-size:10px; padding-left:4px;">-</div>`;
             } else {
                 players.forEach((p) => {
                     const logoUrl = getLogoUrl(p.team);
-                    const logoHtml = logoUrl ? `<img src="${logoUrl}" class="team-logo" style="width:12px;height:12px; margin-right:3px;" onerror="this.style.display='none'">` : '';
+                    const logoHtml = logoUrl ? `<img src="${logoUrl}" class="team-logo" style="width:12px;height:12px; vertical-align:middle; margin-right:3px;" onerror="this.style.display='none'">` : '';
                     
-                    html += `<div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-bottom:3px; gap:4px;">
+                    html += `<div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-bottom:3px; padding:0 2px;">
                         <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:95px;" title="${p.name}">
                             ${logoHtml}${p.name}
                         </span>
-                        <span style="font-weight:bold; color:var(--success); font-size:10px;">${p.cost}</span>
+                        <span style="font-weight:bold; color:var(--text-main); font-size:10px;">${p.cost}</span>
                     </div>`;
                 });
             }
