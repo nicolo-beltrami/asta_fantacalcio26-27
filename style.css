@@ -28,7 +28,7 @@ body {
     background-color: var(--bg-body);
     color: var(--text-main);
     padding: 24px;
-    max-width: 1400px;
+    max-width: 100%; /* Allargato per sfruttare tutto lo schermo */
     margin: 0 auto;
 }
 
@@ -148,11 +148,13 @@ button {
 .autocomplete-item:hover { background-color: #f8fafc; }
 .team-logo { width: 20px; height: 20px; object-fit: contain; }
 
-/* Griglia Schede Squadre */
+/* --- SCROLL ORIZZONTALE SCHEDE SQUADRE --- */
 .teams-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 20px;
+    display: flex !important;
+    overflow-x: auto;
+    padding-bottom: 16px;
+    gap: 16px;
+    width: 100%;
 }
 
 .team-card {
@@ -162,6 +164,9 @@ button {
     border: 1px solid var(--border);
     display: flex;
     flex-direction: column;
+    min-width: 320px;
+    max-width: 320px;
+    flex-shrink: 0; /* Impedisce alle schede di stringersi */
 }
 
 .team-header {
@@ -257,17 +262,19 @@ button {
 .delete-btn { background: transparent; color: var(--danger); font-size: 11px; padding: 0; }
 .delete-btn:hover { background: transparent; text-decoration: underline; }
 
-/* Vista Compatta (Excel-style) */
+/* --- SCROLL ORIZZONTALE VISTA COMPATTA --- */
 .compact-container {
     overflow-x: auto;
     background: white;
     border-radius: 12px;
     border: 1px solid var(--border);
     padding: 16px;
+    width: 100%;
 }
 
 .compact-table {
-    width: 100%;
+    width: max-content;
+    min-width: 100%;
     border-collapse: collapse;
     font-size: 13px;
 }
@@ -279,6 +286,11 @@ button {
     vertical-align: top;
 }
 
+.compact-table th {
+    background-color: #f8fafc;
+    font-weight: 700;
+    min-width: 150px;
+}
 .compact-table th {
     background-color: #f8fafc;
     font-weight: 700;
