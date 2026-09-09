@@ -28,7 +28,7 @@
 body {
     background-color: var(--bg-body);
     color: var(--text-main);
-    padding: 24px;
+    padding: 16px;
     max-width: 100%;
     margin: 0 auto;
 }
@@ -36,41 +36,41 @@ body {
 header {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     color: white;
-    padding: 20px 28px;
-    border-radius: 14px;
-    margin-bottom: 16px;
+    padding: 14px 20px;
+    border-radius: 12px;
+    margin-bottom: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 12px;
 }
 
-header h1 { font-size: 22px; font-weight: 700; color: white; }
-.setup-panel { display: flex; gap: 10px; }
+header h1 { font-size: 20px; font-weight: 700; color: white; }
+.setup-panel { display: flex; gap: 8px; }
 
 .toolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 14px;
     flex-wrap: wrap;
 }
 
-.search-box { flex: 1; min-width: 250px; }
+.search-box { flex: 1; min-width: 200px; }
 .search-box input { width: 100%; }
 
 .view-toggle { display: flex; gap: 6px; }
 .view-toggle button.active { background-color: var(--accent); color: white; border-color: var(--accent); }
 
-.actions-box { display: flex; gap: 10px; }
+.actions-box { display: flex; gap: 8px; }
 
 input, select {
-    padding: 10px 14px;
+    padding: 8px 12px;
     border: 1px solid var(--border);
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 13px;
     background-color: white;
     color: var(--text-main);
     outline: none;
@@ -83,9 +83,9 @@ input:focus, select:focus {
 }
 
 button {
-    padding: 10px 16px;
+    padding: 8px 14px;
     border-radius: 8px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     border: none;
     cursor: pointer;
@@ -101,25 +101,25 @@ button {
 
 .auction-panel {
     background: var(--bg-card);
-    padding: 20px 24px;
-    border-radius: 12px;
-    margin-bottom: 24px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin-bottom: 16px;
     border: 1px solid var(--border);
 }
 
 .auction-panel h2 {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     color: var(--text-muted);
     text-transform: uppercase;
 }
 
-.form-group { display: flex; gap: 12px; flex-wrap: wrap; }
-.form-group input, .form-group select { flex: 1; min-width: 140px; }
+.form-group { display: flex; gap: 10px; flex-wrap: wrap; }
+.form-group input, .form-group select { flex: 1; min-width: 120px; }
 
 /* Autocompletamento */
-.autocomplete-wrapper { position: relative; flex: 2; min-width: 200px; }
+.autocomplete-wrapper { position: relative; flex: 2; min-width: 180px; }
 .autocomplete-wrapper input { width: 100%; }
 
 .autocomplete-items {
@@ -138,35 +138,35 @@ button {
 }
 
 .autocomplete-item {
-    padding: 10px 12px;
+    padding: 8px 10px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     border-bottom: 1px solid #f1f5f9;
 }
 
 .autocomplete-item:hover { background-color: #f8fafc; }
-.team-logo { width: 20px; height: 20px; object-fit: contain; }
+.team-logo { width: 18px; height: 18px; object-fit: contain; }
 
-/* SCROLL ORIZZONTALE SCHEDE SQUADRE */
+/* SCROLL ORIZZONTALE SCHEDE SQUADRE COMPATTE */
 .teams-container {
     display: flex;
     overflow-x: auto;
-    padding-bottom: 16px;
-    gap: 16px;
+    padding-bottom: 12px;
+    gap: 12px;
     width: 100%;
 }
 
 .team-card {
     background: var(--bg-card);
-    border-radius: 12px;
-    padding: 18px;
+    border-radius: 10px;
+    padding: 12px;
     border: 1px solid var(--border);
     display: flex;
     flex-direction: column;
-    min-width: 320px;
-    max-width: 320px;
+    min-width: 250px;
+    max-width: 250px;
     flex-shrink: 0;
 }
 
@@ -174,35 +174,44 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding-bottom: 12px;
+    padding-bottom: 8px;
     border-bottom: 1px solid var(--border);
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
-.team-name { font-size: 18px; font-weight: 700; color: var(--primary); }
+.team-name { 
+    font-size: 15px; 
+    font-weight: 700; 
+    color: var(--primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+}
+
 .credits-badge {
     background-color: #f1f5f9;
     color: var(--success);
     font-weight: 700;
-    font-size: 16px;
-    padding: 6px 12px;
-    border-radius: 20px;
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: 14px;
     border: 1px solid #dcfce7;
 }
 
 /* Accordion Ruoli */
-.role-section { margin-top: 6px; }
+.role-section { margin-top: 4px; }
 
 .role-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     color: var(--text-muted);
-    padding: 6px 8px;
-    border-radius: 6px;
+    padding: 4px 6px;
+    border-radius: 4px;
     cursor: pointer;
     user-select: none;
     transition: background-color 0.2s;
@@ -212,14 +221,14 @@ button {
 
 /* Badge Ruoli con Colori */
 .role-badge {
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
     border-radius: 4px;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 800;
 }
 
@@ -229,39 +238,39 @@ button {
 .badge-A { background-color: var(--role-a); }
 
 .role-spent-percentage {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--accent);
     font-weight: 600;
 }
 
-.arrow-icon { font-size: 10px; transition: transform 0.2s; color: var(--text-muted); }
+.arrow-icon { font-size: 9px; transition: transform 0.2s; color: var(--text-muted); }
 
-.player-list { list-style: none; margin-bottom: 8px; }
+.player-list { list-style: none; margin-bottom: 4px; }
 
 .player-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 8px;
-    font-size: 13px;
+    padding: 4px 6px;
+    font-size: 12px;
     border-bottom: 1px dashed #f1f5f9;
 }
 
-.player-info { display: flex; align-items: center; gap: 8px; }
+.player-info { display: flex; align-items: center; gap: 6px; }
 .player-item.highlight { background-color: #fef08a; border-radius: 4px; }
 .player-name { font-weight: 500; }
 .player-cost { font-weight: 600; color: var(--text-muted); }
 
-.delete-btn { background: transparent; color: var(--danger); font-size: 11px; padding: 0; }
+.delete-btn { background: transparent; color: var(--danger); font-size: 10px; padding: 0; }
 .delete-btn:hover { background: transparent; text-decoration: underline; }
 
 /* SCROLL ORIZZONTALE VISTA COMPATTA */
 .compact-container {
     overflow-x: auto;
     background: white;
-    border-radius: 12px;
+    border-radius: 10px;
     border: 1px solid var(--border);
-    padding: 16px;
+    padding: 12px;
     width: 100%;
 }
 
@@ -269,12 +278,12 @@ button {
     width: max-content;
     min-width: 100%;
     border-collapse: collapse;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .compact-table th, .compact-table td {
     border: 1px solid var(--border);
-    padding: 8px 12px;
+    padding: 6px 10px;
     text-align: left;
     vertical-align: top;
 }
@@ -282,5 +291,5 @@ button {
 .compact-table th {
     background-color: #f8fafc;
     font-weight: 700;
-    min-width: 150px;
+    min-width: 130px;
 }
