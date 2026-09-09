@@ -11,10 +11,11 @@
     --text-muted: #64748b;
     --border: #e2e8f0;
     
-    --role-p: #d97706;
-    --role-d: #16a34a;
-    --role-c: #2563eb;
-    --role-a: #dc2626;
+    /* Colori Ruoli Fantacalcio */
+    --role-p: #eab308; /* Giallo Portieri */
+    --role-d: #16a34a; /* Verde Difesa */
+    --role-c: #0284c7; /* Azzurro Centrocampo */
+    --role-a: #dc2626; /* Rosso Attacco */
 }
 
 * {
@@ -28,7 +29,7 @@ body {
     background-color: var(--bg-body);
     color: var(--text-main);
     padding: 24px;
-    max-width: 100%; /* Allargato per sfruttare tutto lo schermo */
+    max-width: 100%;
     margin: 0 auto;
 }
 
@@ -148,7 +149,7 @@ button {
 .autocomplete-item:hover { background-color: #f8fafc; }
 .team-logo { width: 20px; height: 20px; object-fit: contain; }
 
-/* --- SCROLL ORIZZONTALE SCHEDE SQUADRE --- */
+/* SCROLL ORIZZONTALE SCHEDE SQUADRE */
 .teams-container {
     display: flex !important;
     overflow-x: auto;
@@ -166,7 +167,7 @@ button {
     flex-direction: column;
     min-width: 320px;
     max-width: 320px;
-    flex-shrink: 0; /* Impedisce alle schede di stringersi */
+    flex-shrink: 0;
 }
 
 .team-header {
@@ -209,18 +210,20 @@ button {
 
 .role-header:hover { background-color: #f1f5f9; }
 
+/* Badge Ruoli con Colori */
 .role-badge {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     border-radius: 4px;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 11px;
+    font-weight: 800;
 }
 
-.badge-P { background-color: var(--role-p); }
+.badge-P { background-color: var(--role-p); color: #000; }
 .badge-D { background-color: var(--role-d); }
 .badge-C { background-color: var(--role-c); }
 .badge-A { background-color: var(--role-a); }
@@ -249,20 +252,10 @@ button {
 .player-name { font-weight: 500; }
 .player-cost { font-weight: 600; color: var(--text-muted); }
 
-.remove-player-btn {
-    color: var(--danger);
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 12px;
-    padding: 2px 4px;
-    border-radius: 4px;
-}
-.remove-player-btn:hover { background-color: #fee2e2; }
-
 .delete-btn { background: transparent; color: var(--danger); font-size: 11px; padding: 0; }
 .delete-btn:hover { background: transparent; text-decoration: underline; }
 
-/* --- SCROLL ORIZZONTALE VISTA COMPATTA --- */
+/* SCROLL ORIZZONTALE VISTA COMPATTA */
 .compact-container {
     overflow-x: auto;
     background: white;
@@ -290,8 +283,4 @@ button {
     background-color: #f8fafc;
     font-weight: 700;
     min-width: 150px;
-}
-.compact-table th {
-    background-color: #f8fafc;
-    font-weight: 700;
 }
