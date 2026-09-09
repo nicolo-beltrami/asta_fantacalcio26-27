@@ -251,7 +251,7 @@ const PLAYERS_DB = [
     { name: "Hakan Calhanoglu", role: "C", team: "inter" },
     { name: "Scott McTominay", role: "C", team: "napoli" },
     { name: "Christian Pulisic", role: "C", team: "milan" },
-    { name: "Riccardo Orsolini", role: "A", team: "bologna" },
+    { name: "Riccardo Orsolini", role: "C", team: "bologna" },
     { name: "Martin Baturina", role: "C", team: "como" },
     { name: "Adrien Rabiot", role: "C", team: "milan" },
     { name: "Mattia Zaccagni", role: "C", team: "lazio" },
