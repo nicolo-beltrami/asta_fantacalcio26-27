@@ -8,12 +8,12 @@ function getLogoUrl(team) {
 const ROLE_SLOTS = { P: 3, D: 8, C: 8, A: 6 };
 const INITIAL_CREDITS = 500;
 
-// Mappatura colori in formato RGB per la vista compatta
+// Mappatura colori per la vista compatta
 const ROLE_COLORS = {
-    P: { bg: '#fef9c3', text: '#854d0e', badge: 'var(--role-p)' }, // Giallo
-    D: { bg: '#dcfce7', text: '#166534', badge: 'var(--role-d)' }, // Verde
-    C: { bg: '#e0f2fe', text: '#075985', badge: 'var(--role-c)' }, // Azzurro
-    A: { bg: '#fee2e2', text: '#991b1b', badge: 'var(--role-a)' }  // Rosso
+    P: { bg: '#fef9c3', text: '#854d0e' }, // Giallo Portieri
+    D: { bg: '#dcfce7', text: '#166534' }, // Verde Difesa
+    C: { bg: '#e0f2fe', text: '#075985' }, // Azzurro Centrocampo
+    A: { bg: '#fee2e2', text: '#991b1b' }  // Rosso Attacco
 };
 
 let teams = JSON.parse(localStorage.getItem('fanta_teams')) || [];
@@ -150,11 +150,26 @@ function toggleRole(element) {
 
 function setViewMode(mode) {
     currentViewMode = mode;
-    document.getElementById('btnCardsView').classList.toggle('active', mode === 'cards');
-    document.getElementById('btnCompactView').classList.toggle('active', mode === 'compact');
     
-    document.getElementById('teamsContainer').style.display = mode === 'cards' ? 'flex' : 'none';
-    document.getElementById('compactContainer').style.display = mode === 'compact' ? 'block' : 'none';
+    // Gestione stato bottoni
+    const btnCards = document.getElementById('btnCardsView');
+    const btnCompact = document.getElementById('btnCompactView');
+    if (btnCards) btnCards.classList.toggle('active', mode === 'cards');
+    if (btnCompact) btnCompact.classList.toggle('active', mode === 'compact');
+    
+    // Controllo visibilità rigido
+    const cardsContainer = document.getElementById('teamsContainer');
+    const compactContainer = document.getElementById('compactContainer');
+    
+    if (cardsContainer && compactContainer) {
+        if (mode === 'cards') {
+            cardsContainer.style.setProperty('display', 'flex', 'important');
+            compactContainer.style.setProperty('display', 'none', 'important');
+        } else {
+            cardsContainer.style.setProperty('display', 'none', 'important');
+            compactContainer.style.setProperty('display', 'block', 'important');
+        }
+    }
     
     updateUI();
 }
@@ -292,7 +307,7 @@ function renderCardsView() {
                             </div>
                             <div style="display:flex; align-items:center; gap:8px;">
                                 <span class="player-cost">${player.cost} cr</span>
-                                <span class="remove-player-btn" title="Svincola" onclick="event.stopPropagation(); removePlayer(${teamIndex}, '${role.key}', ${playerIndex})">✕</span>
+                                <span class="remove-player-btn" title="Svincola" style="cursor:pointer; color:var(--danger);" onclick="event.stopPropagation(); removePlayer(${teamIndex}, '${role.key}', ${playerIndex})">✕</span>
                             </div>
                         </li>
                     `;
@@ -361,4 +376,6 @@ function renderCompactView() {
     container.innerHTML = html;
 }
 
-window.onload = updateUI;
+window.onload = function() {
+    setViewMode('cards');
+};
