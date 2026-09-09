@@ -36,9 +36,9 @@ body {
 header {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     color: white;
-    padding: 24px 32px;
-    border-radius: 16px;
-    margin-bottom: 24px;
+    padding: 20px 28px;
+    border-radius: 14px;
+    margin-bottom: 16px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
@@ -48,9 +48,8 @@ header {
 }
 
 header h1 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
-    letter-spacing: -0.5px;
     color: white;
 }
 
@@ -59,6 +58,31 @@ header h1 {
     gap: 10px;
 }
 
+/* Toolbar */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 250px;
+}
+
+.search-box input {
+    width: 100%;
+}
+
+.actions-box {
+    display: flex;
+    gap: 10px;
+}
+
+/* Input e Select */
 input, select {
     padding: 10px 14px;
     border: 1px solid var(--border);
@@ -90,8 +114,9 @@ header input:focus {
     box-shadow: none;
 }
 
+/* Pulsanti */
 button {
-    padding: 10px 18px;
+    padding: 10px 16px;
     border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
@@ -107,20 +132,40 @@ button {
 
 .btn-primary:hover {
     background-color: #1d4ed8;
-    transform: translateY(-1px);
 }
 
+.btn-secondary {
+    background-color: #f1f5f9;
+    color: var(--text-main);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    background-color: #e2e8f0;
+}
+
+.btn-danger {
+    background-color: #fee2e2;
+    color: var(--danger);
+    border: 1px solid #fca5a5;
+}
+
+.btn-danger:hover {
+    background-color: #fecaca;
+}
+
+/* Auction Panel */
 .auction-panel {
     background: var(--bg-card);
     padding: 20px 24px;
     border-radius: 12px;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
     border: 1px solid var(--border);
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .auction-panel h2 {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     margin-bottom: 12px;
     color: var(--text-muted);
@@ -139,6 +184,7 @@ button {
     min-width: 140px;
 }
 
+/* Griglia Squadre */
 .teams-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -148,7 +194,7 @@ button {
 .team-card {
     background: var(--bg-card);
     border-radius: 12px;
-    padding: 20px;
+    padding: 18px;
     border: 1px solid var(--border);
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
     display: flex;
@@ -180,19 +226,28 @@ button {
     border: 1px solid #dcfce7;
 }
 
+/* Accordion Ruoli */
 .role-section {
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 .role-header {
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: space-between;
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
     color: var(--text-muted);
-    margin-bottom: 6px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+.role-header:hover {
+    background-color: #f1f5f9;
 }
 
 .role-badge {
@@ -211,6 +266,12 @@ button {
 .badge-C { background-color: var(--role-c); }
 .badge-A { background-color: var(--role-a); }
 
+.arrow-icon {
+    font-size: 10px;
+    transition: transform 0.2s ease;
+    color: var(--text-muted);
+}
+
 .player-list {
     list-style: none;
     margin-bottom: 8px;
@@ -219,9 +280,15 @@ button {
 .player-item {
     display: flex;
     justify-content: space-between;
-    padding: 6px 0;
+    align-items: center;
+    padding: 6px 8px;
     font-size: 13px;
     border-bottom: 1px dashed #f1f5f9;
+}
+
+.player-item.highlight {
+    background-color: #fef08a;
+    border-radius: 4px;
 }
 
 .player-name {
@@ -231,6 +298,20 @@ button {
 .player-cost {
     font-weight: 600;
     color: var(--text-muted);
+}
+
+.remove-player-btn {
+    color: var(--danger);
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.remove-player-btn:hover {
+    background-color: #fee2e2;
 }
 
 .delete-btn {
