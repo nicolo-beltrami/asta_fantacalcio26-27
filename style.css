@@ -91,7 +91,7 @@ header h1 {
     gap: 12px;
 }
 
-/* --- TOOLBAR / FILTRI STILE F1 BUTTONS --- */
+/* --- TOOLBAR / FILTRI --- */
 .toolbar {
     display: flex;
     flex-wrap: wrap;
@@ -120,7 +120,7 @@ header h1 {
     border: 1px solid var(--border-color);
     border-top: 3px solid var(--primary);
     border-radius: var(--radius-lg);
-    padding: 20px 24px;
+    padding: 18px 22px;
     margin-bottom: 24px;
     box-shadow: var(--shadow-card);
 }
@@ -129,13 +129,13 @@ header h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
     border-bottom: 1px solid var(--border-color);
 }
 
 .panel-header h2 {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -144,10 +144,10 @@ header h1 {
 }
 
 .hotkey-tip {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-muted);
     background: #121218;
-    padding: 6px 12px;
+    padding: 5px 12px;
     border-radius: var(--radius-pill);
     border: 1px solid var(--border-color);
 }
@@ -156,112 +156,134 @@ header h1 {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
-    gap: 16px;
-    margin-bottom: 16px;
+    gap: 14px;
+    margin-bottom: 14px;
 }
 
 .control-group {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
 }
 
 .control-group label {
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
     font-weight: 700;
     color: var(--text-muted);
     letter-spacing: 0.5px;
 }
 
-/* --- CARD GIOCATORE ESTRATTO (LIVE) --- */
+/* --- CARD GIOCATORE ESTRATTO (RIGIDAMENTE FISSA) --- */
 .active-player-card {
     background-color: #12121a;
-    border: 2px solid var(--border-highlight);
+    border: 1.5px solid var(--border-highlight);
     border-radius: var(--radius-lg);
-    padding: 14px 20px;
+    padding: 10px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-top: 15px;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    gap: 12px;
+    margin-top: 10px;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+    height: 72px; /* Altezza bloccata per la card */
+    overflow: hidden;
 }
 
+/* AREA INFO GIOCATORE - DIMENSIONE FISSA BLOCCATA */
 .player-calling-info {
     display: flex;
     align-items: center;
-    gap: 14px;
-    min-width: 220px;
+    gap: 10px;
+    width: 280px;      /* Larghezza fissa per evitare spostamenti */
+    min-width: 280px;
+    max-width: 280px;
+    overflow: hidden;
 }
 
 .active-team-logo {
-    width: 52px;
-    height: 52px;
+    width: 42px;
+    height: 42px;
     object-fit: contain;
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+    flex-shrink: 0;    /* Lo stemma non si rimpicciolisce mai */
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6));
+}
+
+.player-calling-info > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .active-player-card h3 {
-    font-size: 22px;
+    font-size: 17px;
     font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
     color: #fff;
-    line-height: 1.1;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Punti di sospensione se supera i 280px */
 }
 
 .club-name {
-    font-size: 14px;
+    font-size: 12px;
     color: var(--text-muted);
-    margin-left: 6px;
+    margin-left: 4px;
     font-weight: 600;
 }
 
-/* TIMER & BOTTONE RILANCIO RIDIMENSIONATO */
+/* AREA TIMER + TASTO RILANCIO (POSIZIONE E MISURA FISSA) */
 .timer-display {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
+    flex-shrink: 0;
 }
 
 .countdown-number {
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 900;
     font-style: italic;
     color: var(--primary);
     background: #09090d;
-    width: 54px;
-    height: 54px;
+    width: 46px;
+    height: 46px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: var(--radius-md);
     border: 2px solid var(--primary);
     box-shadow: var(--shadow-glow);
-    text-shadow: 0 0 8px rgba(225, 6, 0, 0.5);
+    text-shadow: 0 0 6px rgba(225, 6, 0, 0.5);
+    flex-shrink: 0;
 }
 
 .btn-raise {
     background: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
     color: white;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 800;
     font-style: italic;
-    padding: 10px 20px;
+    padding: 8px 16px;
+    height: 42px;
+    width: 170px; /* Larghezza fissata per il tasto di rilancio */
     border: none;
     border-radius: var(--radius-pill);
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
+    box-shadow: 0 3px 10px rgba(34, 197, 94, 0.25);
     transition: all 0.15s ease;
     text-transform: uppercase;
     white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .btn-raise:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(34, 197, 94, 0.4);
+    box-shadow: 0 5px 14px rgba(34, 197, 94, 0.4);
     background: linear-gradient(135deg, #25e06b 0%, #16a34a 100%);
 }
 
@@ -269,18 +291,19 @@ header h1 {
     transform: translateY(1px);
 }
 
-/* AZIONI COMPATTE AFFIANCATE */
+/* AZIONI COMPATTE FISSE SULLA DESTRA */
 .live-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
-    flex-wrap: nowrap;
+    gap: 6px;
+    flex-shrink: 0;
 }
 
 .live-actions .btn-secondary,
 .live-actions .btn-danger {
-    font-size: 11px;
-    padding: 8px 14px;
+    font-size: 10px;
+    padding: 7px 12px;
+    height: 36px;
     white-space: nowrap;
 }
 
@@ -289,23 +312,23 @@ header h1 {
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
-    padding: 18px 20px;
+    padding: 16px 20px;
     margin-bottom: 24px;
 }
 
 .auction-panel h2 {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     color: var(--text-muted);
 }
 
 .form-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
     align-items: center;
 }
 
@@ -317,9 +340,9 @@ select {
     color: var(--text-main);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-pill);
-    padding: 9px 16px;
+    padding: 8px 14px;
     font-family: var(--font-family);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     outline: none;
     transition: all 0.2s ease;
@@ -336,18 +359,18 @@ select:focus {
 button {
     font-family: var(--font-family);
     font-weight: 700;
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border-radius: var(--radius-pill);
-    padding: 9px 18px;
+    padding: 8px 16px;
     border: none;
     cursor: pointer;
     transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 5px;
 }
 
 .btn-primary {
@@ -414,7 +437,7 @@ button {
 
 .team-header {
     background: linear-gradient(90deg, #181822 0%, #222230 100%);
-    padding: 14px 18px;
+    padding: 12px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -422,7 +445,7 @@ button {
 }
 
 .team-name {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -448,9 +471,9 @@ button {
     background-color: rgba(16, 185, 129, 0.15);
     color: var(--success);
     border: 1px solid rgba(16, 185, 129, 0.4);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 900;
-    padding: 3px 12px;
+    padding: 3px 10px;
     border-radius: var(--radius-pill);
 }
 
@@ -464,14 +487,14 @@ button {
 }
 
 .role-header {
-    padding: 10px 16px;
+    padding: 8px 14px;
     background-color: rgba(0,0,0,0.15);
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
     user-select: none;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     transition: background-color 0.15s ease;
 }
@@ -481,9 +504,9 @@ button {
 }
 
 .role-badge {
-    padding: 3px 10px;
+    padding: 2px 8px;
     border-radius: var(--radius-pill);
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 900;
     text-transform: uppercase;
     color: #000;
@@ -495,20 +518,20 @@ button {
 .badge-A { background-color: var(--color-a); }
 
 .role-spent-percentage {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text-muted);
     font-weight: 600;
 }
 
 .arrow-icon {
-    font-size: 10px;
+    font-size: 9px;
     color: var(--text-muted);
     transition: transform 0.2s ease;
 }
 
 .player-list {
     list-style: none;
-    padding: 6px 14px;
+    padding: 4px 12px;
     background-color: #181820;
 }
 
@@ -516,9 +539,9 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 8px;
+    padding: 5px 6px;
     border-radius: 6px;
-    font-size: 13px;
+    font-size: 12px;
     transition: background-color 0.15s ease;
 }
 
@@ -538,8 +561,8 @@ button {
 }
 
 .team-logo {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     object-fit: contain;
 }
 
@@ -559,18 +582,18 @@ button {
     background-color: var(--bg-card);
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-color);
-    padding: 16px;
+    padding: 14px;
 }
 
 .compact-table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 10px 0;
+    border-spacing: 8px 0;
 }
 
 .compact-table th {
     background-color: #14141c;
-    padding: 12px;
+    padding: 10px;
     border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
     text-align: center;
@@ -579,7 +602,7 @@ button {
 .compact-table td {
     vertical-align: top;
     background-color: #161620;
-    padding: 12px;
+    padding: 10px;
     border-radius: var(--radius-md);
     border: 1px solid #252533;
 }
@@ -598,19 +621,19 @@ button {
     border: 1px solid var(--border-highlight);
     border-radius: var(--radius-md);
     z-index: 99;
-    max-height: 220px;
+    max-height: 200px;
     overflow-y: auto;
     box-shadow: var(--shadow-card);
     margin-top: 4px;
 }
 
 .autocomplete-item {
-    padding: 10px 14px;
+    padding: 8px 12px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 13px;
+    gap: 8px;
+    font-size: 12px;
     border-bottom: 1px solid #242432;
 }
 
@@ -630,13 +653,16 @@ button {
     }
     
     .active-player-card {
+        height: auto;
         flex-direction: column;
         align-items: stretch;
         text-align: center;
     }
     
     .player-calling-info {
-        flex-direction: column;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
         justify-content: center;
     }
     
