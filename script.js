@@ -401,6 +401,39 @@ function resetAll() {
     }
 }
 
+// TOGGLE SIDEBAR CREDITI (Apertura/Chiusura)
+function toggleCreditsSidebar() {
+    const sidebar = document.getElementById('creditsSidebar');
+    if (sidebar) {
+        sidebar.classList.toggle('collapsed');
+    }
+}
+
+// AGGIORNAMENTO DINAMICO SIDEBAR CREDITI (F1 Style Leaderboard)
+function updateCreditsSidebar() {
+    const leaderboardList = document.getElementById('creditsLeaderboard');
+    if (!leaderboardList) return;
+
+    leaderboardList.innerHTML = '';
+
+    if (teams.length === 0) {
+        leaderboardList.innerHTML = '<li style="color: var(--text-muted); font-style: italic; justify-content: center;">Nessuna squadra</li>';
+        return;
+    }
+
+    // Ordina le squadre in base ai crediti rimanenti (Decrescente)
+    const sortedTeams = [...teams].sort((a, b) => b.credits - a.credits);
+
+    sortedTeams.forEach((team) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <span class="team-name-short" title="${team.name}">${team.name}</span>
+            <span class="team-credits-badge">${team.credits} CR</span>
+        `;
+        leaderboardList.appendChild(li);
+    });
+}
+
 function updateUI() {
     const select = document.getElementById('selectTeam');
     if (select) {
@@ -414,6 +447,9 @@ function updateUI() {
         });
         select.value = currentSelectValue;
     }
+
+    // Aggiorna Sidebar Crediti
+    updateCreditsSidebar();
 
     if (currentViewMode === 'cards') {
         renderCardsView();
@@ -553,10 +589,6 @@ function renderCompactView() {
     html += `</tr></tbody></table>`;
     container.innerHTML = html;
 }
-
-window.onload = function() {
-    setViewMode('cards');
-};
 
 window.onload = function() {
     setViewMode('cards');
