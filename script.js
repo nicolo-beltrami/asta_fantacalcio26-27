@@ -1,4 +1,3 @@
-// Funzione per generare il percorso del logo
 function getLogoUrl(team) {
     if (!team) return '';
     const teamFilename = team.toLowerCase() === "como" ? "como-1907" : team.toLowerCase();
@@ -8,17 +7,21 @@ function getLogoUrl(team) {
 const ROLE_SLOTS = { P: 3, D: 8, C: 8, A: 6 };
 const INITIAL_CREDITS = 500;
 
-// Mappatura colori per la vista compatta
 const ROLE_COLORS = {
-    P: { bg: '#fef9c3', text: '#854d0e' }, // Giallo Portieri
-    D: { bg: '#dcfce7', text: '#166534' }, // Verde Difesa
-    C: { bg: '#e0f2fe', text: '#075985' }, // Azzurro Centrocampo
-    A: { bg: '#fee2e2', text: '#991b1b' }  // Rosso Attacco
+    P: { bg: '#fef9c3', text: '#854d0e' },
+    D: { bg: '#dcfce7', text: '#166534' },
+    C: { bg: '#e0f2fe', text: '#075985' },
+    A: { bg: '#fee2e2', text: '#991b1b' }
 };
 
 let teams = JSON.parse(localStorage.getItem('fanta_teams')) || [];
 let currentViewMode = 'cards';
 let selectedPlayerFromDb = null;
+
+// STATO ASTA LIVE
+let currentCalledPlayer = null;
+let timerInterval = null;
+let timeLeft = 5;
 
 function saveToLocalStorage() {
     localStorage.setItem('fanta_teams', JSON.stringify(teams));
@@ -48,6 +51,120 @@ function removeTeam(index) {
         updateUI();
     }
 }
+
+// LOGICA ASTA LIVE
+function getAllPurchasedPlayerNames() {
+    const purchased = new Set();
+    teams.forEach(t => {
+        ['P', 'D', 'C', 'A'].forEach(role => {
+            t.players[role].forEach(p => purchased.add(p.name.toLowerCase()));
+        });
+    });
+    return purchased;
+}
+
+function callRandomPlayer() {
+    clearInterval(timerInterval);
+    
+    const role = document.getElementById('auctionRoleSelect').value;
+    const purchasedNames = getAllPurchasedPlayerNames();
+
+    // Filtra per ruolo e scarta chi è già stato comprato
+    let availablePlayers = PLAYERS_DB.filter(p => !purchasedNames.has(p.name.toLowerCase()));
+
+    if (role !== 'ALL') {
+        availablePlayers = availablePlayers.filter(p => p.role === role);
+    }
+
+    if (availablePlayers.length === 0) {
+        alert("Tutti i calciatori per questo ruolo/selezione sono già stati acquistati!");
+        return;
+    }
+
+    // Estrazione casuale
+    const randomIndex = Math.floor(Math.random() * availablePlayers.length);
+    currentCalledPlayer = availablePlayers[randomIndex];
+
+    // Popola UI Asta Live
+    document.getElementById('activePlayerCard').style.display = 'flex';
+    document.getElementById('activePlayerName').textContent = currentCalledPlayer.name;
+    document.getElementById('activePlayerClub').textContent = currentCalledPlayer.team ? `(${currentCalledPlayer.team})` : '';
+    
+    const roleBadge = document.getElementById('activePlayerRole');
+    roleBadge.textContent = currentCalledPlayer.role;
+    roleBadge.className = `role-badge badge-${currentCalledPlayer.role}`;
+
+    const logoImg = document.getElementById('activeTeamLogo');
+    const logoUrl = getLogoUrl(currentCalledPlayer.team);
+    if (logoUrl) {
+        logoImg.src = logoUrl;
+        logoImg.style.display = 'block';
+    } else {
+        logoImg.style.display = 'none';
+    }
+
+    // Precompila il form d'acquisto sottostante
+    document.getElementById('playerName').value = currentCalledPlayer.name;
+    document.getElementById('playerRole').value = currentCalledPlayer.role;
+    selectedPlayerFromDb = currentCalledPlayer;
+
+    // Fai partire il Timer
+    startTimer();
+}
+
+function startTimer() {
+    clearInterval(timerInterval);
+    const configuredTime = parseInt(document.getElementById('auctionTimerInput').value) || 5;
+    timeLeft = configuredTime;
+    
+    updateTimerDisplay();
+
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        updateTimerDisplay();
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            // Notifica sonora/visiva facoltativa
+        }
+    }, 1000);
+}
+
+function resetTimer() {
+    if (!currentCalledPlayer) return;
+    startTimer();
+}
+
+function updateTimerDisplay() {
+    const display = document.getElementById('timerCountdown');
+    if (display) {
+        display.textContent = timeLeft;
+    }
+}
+
+function cancelCall() {
+    clearInterval(timerInterval);
+    currentCalledPlayer = null;
+    document.getElementById('activePlayerCard').style.display = 'none';
+    document.getElementById('playerName').value = '';
+    selectedPlayerFromDb = null;
+}
+
+function markAsUnsold() {
+    cancelCall();
+}
+
+// Scorciatoia da Tastiera: BARRA SPAZIATRICE = Rilancio
+document.addEventListener('keydown', function(event) {
+    if (event.code === 'Space' && currentCalledPlayer) {
+        // Evita che lo spazio faccia scorrere la pagina se l'utente non sta scrivendo in un campo di testo
+        const activeTag = document.activeElement.tagName.toLowerCase();
+        if (activeTag !== 'input' && activeTag !== 'select') {
+            event.preventDefault();
+            resetTimer();
+        }
+    }
+});
 
 // Autocompletamento Calciatori
 function onPlayerInput(val) {
@@ -120,6 +237,9 @@ function buyPlayer() {
     document.getElementById('playerCost').value = '';
     selectedPlayerFromDb = null;
 
+    // Chiudi la chiamata attiva e preparati al prossimo
+    cancelCall();
+
     saveToLocalStorage();
     updateUI();
 }
@@ -151,13 +271,11 @@ function toggleRole(element) {
 function setViewMode(mode) {
     currentViewMode = mode;
     
-    // Gestione stato bottoni
     const btnCards = document.getElementById('btnCardsView');
     const btnCompact = document.getElementById('btnCompactView');
     if (btnCards) btnCards.classList.toggle('active', mode === 'cards');
     if (btnCompact) btnCompact.classList.toggle('active', mode === 'compact');
     
-    // Controllo visibilità rigido
     const cardsContainer = document.getElementById('teamsContainer');
     const compactContainer = document.getElementById('compactContainer');
     
@@ -375,6 +493,10 @@ function renderCompactView() {
     html += `</tr></tbody></table>`;
     container.innerHTML = html;
 }
+
+window.onload = function() {
+    setViewMode('cards');
+};
 
 window.onload = function() {
     setViewMode('cards');
