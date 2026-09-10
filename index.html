@@ -8,6 +8,23 @@
 </head>
 <body>
 
+    <!-- SIDEBAR CREDITI RESIDUI (A SCOMPARSA) -->
+    <aside id="creditsSidebar" class="credits-sidebar collapsed">
+        <button id="toggleSidebarBtn" class="toggle-sidebar-btn" title="Espandi/Riduci classifica crediti" onclick="toggleCreditsSidebar()">
+            <span class="arrow-icon">❯</span>
+        </button>
+
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <span class="sidebar-title">💰 Crediti</span>
+            </div>
+            
+            <ul id="creditsLeaderboard" class="credits-leaderboard">
+                <!-- Generato dinamicamente via JS (da più ricco a più povero) -->
+            </ul>
+        </div>
+    </aside>
+
     <header>
         <h1>⚽ Fantastats</h1>
         <div class="setup-panel">
