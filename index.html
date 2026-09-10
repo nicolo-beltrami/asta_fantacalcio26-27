@@ -3,25 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fantastats Pro - Asta Fantacalcio</title>
-    <link rel="stylesheet" href="style.css?v=4">
+    <title>Fantastats - Gestione Asta</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <header>
         <h1>⚽ Fantastats</h1>
         <div class="setup-panel">
-            <input type="text" id="newTeamName" placeholder="Nome Squadra">
+            <input type="text" id="newTeamName" placeholder="Nome Nuova Squadra">
             <button class="btn-primary" onclick="addTeam()">+ Crea Squadra</button>
         </div>
     </header>
 
     <div class="toolbar">
         <div class="search-box">
-            <input type="text" id="searchInput" placeholder="🔍 Cerca calciatore acquistato..." onkeyup="searchPlayers()">
+            <input type="text" id="searchInput" oninput="searchPlayers()" placeholder="🔍 Cerca calciatore acquistato...">
         </div>
         <div class="view-toggle">
-            <button class="btn-secondary active" id="btnCardsView" onclick="setViewMode('cards')">📱 Vista Schede</button>
-            <button class="btn-secondary" id="btnCompactView" onclick="setViewMode('compact')">📊 Vista Compatta</button>
+            <button id="btnCardsView" class="btn-secondary active" onclick="setViewMode('cards')">🎴 Vista Schede</button>
+            <button id="btnCompactView" class="btn-secondary" onclick="setViewMode('compact')">📊 Vista Compatta</button>
         </div>
         <div class="actions-box">
             <button class="btn-secondary" onclick="exportToCSV()">📥 Esporta CSV</button>
@@ -29,33 +30,85 @@
         </div>
     </div>
 
+    <!-- PANNELLO ASTA LIVE (NUOVO) -->
+    <div class="live-auction-panel">
+        <div class="panel-header">
+            <h2>🔥 Modalità Asta Live</h2>
+            <span class="hotkey-tip">Tip: Premi <strong>Barra Spaziatrice</strong> per rilanciare al volo!</span>
+        </div>
+        
+        <div class="auction-controls">
+            <div class="control-group">
+                <label>Ruolo:</label>
+                <select id="auctionRoleSelect">
+                    <option value="ALL">Tutti i Ruoli</option>
+                    <option value="P">Portieri (P)</option>
+                    <option value="D">Difensori (D)</option>
+                    <option value="C">Centrocampisti (C)</option>
+                    <option value="A">Attaccanti (A)</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label>Timer (sec):</label>
+                <input type="number" id="auctionTimerInput" value="5" min="1" max="10">
+            </div>
+
+            <button class="btn-primary btn-call" onclick="callRandomPlayer()">🎲 Chiama Giocatore</button>
+        </div>
+
+        <!-- Box del Giocatore Estratto -->
+        <div id="activePlayerCard" class="active-player-card" style="display: none;">
+            <div class="player-calling-info">
+                <img id="activeTeamLogo" src="" class="active-team-logo" onerror="this.style.display='none'">
+                <div>
+                    <h3 id="activePlayerName">-</h3>
+                    <span id="activePlayerRole" class="role-badge">-</span>
+                    <span id="activePlayerClub" class="club-name">-</span>
+                </div>
+            </div>
+
+            <div class="timer-display">
+                <div id="timerCountdown" class="countdown-number">5</div>
+                <button class="btn-raise" onclick="resetTimer()">⚡ RILANCIO (SPACE)</button>
+            </div>
+
+            <div class="live-actions">
+                <button class="btn-secondary" onclick="cancelCall()">🔄 Annulla Chiamata</button>
+                <button class="btn-danger" onclick="markAsUnsold()">❌ Unsold / Nessuna Offerta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- REGISTRA NUOVO ACQUISTO -->
     <div class="auction-panel">
         <h2>Registra Nuovo Acquisto</h2>
         <div class="form-group">
-            <select id="selectTeam"><option value="">Seleziona Squadra</option></select>
+            <select id="selectTeam">
+                <option value="">Seleziona Squadra</option>
+            </select>
             
-            <!-- Box Input con Autocompletamento -->
             <div class="autocomplete-wrapper">
                 <input type="text" id="playerName" placeholder="Cerca o inserisci calciatore..." oninput="onPlayerInput(this.value)">
                 <div id="autocompleteList" class="autocomplete-items"></div>
             </div>
 
-            <!-- Campo Ruolo (Compilato in automatico o manuale) -->
             <select id="playerRole">
                 <option value="P">Portiere (P)</option>
                 <option value="D">Difensore (D)</option>
                 <option value="C">Centrocampista (C)</option>
                 <option value="A">Attaccante (A)</option>
             </select>
+
             <input type="number" id="playerCost" placeholder="Crediti" min="1">
             <button class="btn-primary" onclick="buyPlayer()">Conferma Acquisto</button>
         </div>
     </div>
 
-    <!-- Contenitore della vista a schede (default) -->
-    <main id="teamsContainer" class="teams-container"></main>
+    <!-- VISTA SCHEDE -->
+    <div id="teamsContainer" class="teams-container"></div>
 
-    <!-- Contenitore della vista compatta (stile tabella Excel) -->
+    <!-- VISTA COMPATTA -->
     <div id="compactContainer" class="compact-container" style="display: none;"></div>
 
     <script src="players.js"></script>
