@@ -22,6 +22,7 @@ let selectedPlayerFromDb = null;
 let currentCalledPlayer = null;
 let timerInterval = null;
 let timeLeft = 5;
+let isAudioMuted = false; // Stato per attivare/disattivare l'audio
 
 // Web Audio API per generare i beep senza file esterni
 let audioCtx = null;
@@ -38,8 +39,28 @@ function initAudio() {
     }
 }
 
-// Funzione per suonare un Beep sinteti
-function playBeep(freq = 800, duration = 0.15, type = 'sine') {
+// Funzione per attivare/disattivare i suoni del timer
+function toggleAudioMute() {
+    isAudioMuted = !isAudioMuted;
+    const btn = document.getElementById('btnToggleAudio');
+    if (btn) {
+        if (isAudioMuted) {
+            btn.textContent = '🔇 Suono Disattivato';
+            btn.style.backgroundColor = '#f87171';
+            btn.style.color = '#ffffff';
+        } else {
+            btn.textContent = '🔊 Suono Attivo';
+            btn.style.backgroundColor = '';
+            btn.style.color = '';
+        }
+    }
+}
+
+// Funzione per suonare un Beep sintetico
+function playBeep(freq = 800, duration = 0.15, type = 'sine', forcePlay = false) {
+    // Se l'audio è disattivato e non è un test manuale, non suonare
+    if (isAudioMuted && !forcePlay) return;
+
     initAudio();
     if (!audioCtx) return;
 
@@ -105,7 +126,7 @@ function getAllPurchasedPlayerNames() {
 }
 
 function callRandomPlayer() {
-    initAudio(); // Inizializza audio al primo click dell'utente
+    initAudio();
     clearInterval(timerInterval);
     
     const role = document.getElementById('auctionRoleSelect').value;
@@ -160,11 +181,11 @@ function startTimer() {
         timeLeft--;
         updateTimerDisplay();
 
-        // LOGICA AUDIO PER GLI ULTIMI SECONDI
+        // LOGICA AUDIO PER GLI ULTIMI SECONDI (controlla lo stato Mute in playBeep)
         if (timeLeft === 3 || timeLeft === 2 || timeLeft === 1) {
-            playBeep(750, 0.15); // Beep standard a 3, 2, 1
+            playBeep(750, 0.15);
         } else if (timeLeft === 0) {
-            playBeep(1200, 0.4, 'square'); // Beep acuto/lungo allo scadere
+            playBeep(1200, 0.4, 'square');
             clearInterval(timerInterval);
         }
     }, 1000);
@@ -532,6 +553,10 @@ function renderCompactView() {
     html += `</tr></tbody></table>`;
     container.innerHTML = html;
 }
+
+window.onload = function() {
+    setViewMode('cards');
+};
 
 window.onload = function() {
     setViewMode('cards');
