@@ -186,7 +186,7 @@ header h1 {
     gap: 12px;
     margin-top: 10px;
     box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
-    height: 72px; /* Altezza bloccata per la card */
+    height: 72px; /* Altezza bloccata */
     overflow: hidden;
 }
 
@@ -226,7 +226,7 @@ header h1 {
     line-height: 1.15;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* Punti di sospensione se supera i 280px */
+    text-overflow: ellipsis; /* Punti di sospensione per i nomi molto lunghi */
 }
 
 .club-name {
@@ -270,7 +270,7 @@ header h1 {
     font-style: italic;
     padding: 8px 16px;
     height: 42px;
-    width: 170px; /* Larghezza fissata per il tasto di rilancio */
+    width: 170px; /* Larghezza fissa per il tasto di rilancio */
     border: none;
     border-radius: var(--radius-pill);
     cursor: pointer;
@@ -411,20 +411,45 @@ button {
     color: #ffffff;
 }
 
-/* --- VISTA SCHEDE (TEAMS CARDS) --- */
+/* --- VISTA SCHEDE (TEAMS CARDS HORIZONTAL SCROLL) --- */
 .teams-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    flex-wrap: nowrap;          /* NON manda a capo le schede */
+    overflow-x: auto;           /* Attiva lo scorrimento orizzontale */
+    overflow-y: hidden;
+    gap: 16px;
+    padding-bottom: 12px;       /* Spazio per la barra di scorrimento */
     align-items: flex-start;
+    scroll-behavior: smooth;
+}
+
+/* Personalizzazione Barra di Scorrimento Orizzontale (F1 / Dark Style) */
+.teams-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.teams-container::-webkit-scrollbar-track {
+    background: #14141c;
+    border-radius: var(--radius-pill);
+}
+
+.teams-container::-webkit-scrollbar-thumb {
+    background: #2e2e3a;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-highlight);
+}
+
+.teams-container::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
 }
 
 .team-card {
     background-color: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
-    width: calc(33.333% - 14px);
-    min-width: 310px;
+    width: 320px;               /* Dimensione fissa per ogni scheda */
+    min-width: 320px;           /* Impedisce il restringimento */
+    flex-shrink: 0;             /* Mantiene tutte le schede affiancate */
     box-shadow: var(--shadow-card);
     overflow: hidden;
     transition: transform 0.2s ease, border-color 0.2s ease;
@@ -648,10 +673,6 @@ button {
 
 /* --- RESPONSIVE MOBILE --- */
 @media (max-width: 900px) {
-    .team-card {
-        width: 100%;
-    }
-    
     .active-player-card {
         height: auto;
         flex-direction: column;
