@@ -18,10 +18,51 @@ let teams = JSON.parse(localStorage.getItem('fanta_teams')) || [];
 let currentViewMode = 'cards';
 let selectedPlayerFromDb = null;
 
-// STATO ASTA LIVE
+// STATO ASTA LIVE & AUDIO
 let currentCalledPlayer = null;
 let timerInterval = null;
 let timeLeft = 5;
+
+// Web Audio API per generare i beep senza file esterni
+let audioCtx = null;
+
+function initAudio() {
+    if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) {
+            audioCtx = new AudioContext();
+        }
+    }
+    if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+}
+
+// Funzione per suonare un Beep sinteti
+function playBeep(freq = 800, duration = 0.15, type = 'sine') {
+    initAudio();
+    if (!audioCtx) return;
+
+    try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+        // Inviluppo del volume per evitare i "pop"
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    } catch (e) {
+        console.warn("Audio non supportato o bloccato dal browser", e);
+    }
+}
 
 function saveToLocalStorage() {
     localStorage.setItem('fanta_teams', JSON.stringify(teams));
@@ -64,12 +105,12 @@ function getAllPurchasedPlayerNames() {
 }
 
 function callRandomPlayer() {
+    initAudio(); // Inizializza audio al primo click dell'utente
     clearInterval(timerInterval);
     
     const role = document.getElementById('auctionRoleSelect').value;
     const purchasedNames = getAllPurchasedPlayerNames();
 
-    // Filtra per ruolo e scarta chi è già stato comprato
     let availablePlayers = PLAYERS_DB.filter(p => !purchasedNames.has(p.name.toLowerCase()));
 
     if (role !== 'ALL') {
@@ -81,11 +122,9 @@ function callRandomPlayer() {
         return;
     }
 
-    // Estrazione casuale
     const randomIndex = Math.floor(Math.random() * availablePlayers.length);
     currentCalledPlayer = availablePlayers[randomIndex];
 
-    // Popola UI Asta Live
     document.getElementById('activePlayerCard').style.display = 'flex';
     document.getElementById('activePlayerName').textContent = currentCalledPlayer.name;
     document.getElementById('activePlayerClub').textContent = currentCalledPlayer.team ? `(${currentCalledPlayer.team})` : '';
@@ -103,12 +142,10 @@ function callRandomPlayer() {
         logoImg.style.display = 'none';
     }
 
-    // Precompila il form d'acquisto sottostante
     document.getElementById('playerName').value = currentCalledPlayer.name;
     document.getElementById('playerRole').value = currentCalledPlayer.role;
     selectedPlayerFromDb = currentCalledPlayer;
 
-    // Fai partire il Timer
     startTimer();
 }
 
@@ -123,15 +160,19 @@ function startTimer() {
         timeLeft--;
         updateTimerDisplay();
 
-        if (timeLeft <= 0) {
+        // LOGICA AUDIO PER GLI ULTIMI SECONDI
+        if (timeLeft === 3 || timeLeft === 2 || timeLeft === 1) {
+            playBeep(750, 0.15); // Beep standard a 3, 2, 1
+        } else if (timeLeft === 0) {
+            playBeep(1200, 0.4, 'square'); // Beep acuto/lungo allo scadere
             clearInterval(timerInterval);
-            // Notifica sonora/visiva facoltativa
         }
     }, 1000);
 }
 
 function resetTimer() {
     if (!currentCalledPlayer) return;
+    initAudio();
     startTimer();
 }
 
@@ -154,10 +195,9 @@ function markAsUnsold() {
     cancelCall();
 }
 
-// Scorciatoia da Tastiera: BARRA SPAZIATRICE = Rilancio
+// Scorciatoia Tastiera: BARRA SPAZIATRICE = Rilancio
 document.addEventListener('keydown', function(event) {
     if (event.code === 'Space' && currentCalledPlayer) {
-        // Evita che lo spazio faccia scorrere la pagina se l'utente non sta scrivendo in un campo di testo
         const activeTag = document.activeElement.tagName.toLowerCase();
         if (activeTag !== 'input' && activeTag !== 'select') {
             event.preventDefault();
@@ -237,7 +277,6 @@ function buyPlayer() {
     document.getElementById('playerCost').value = '';
     selectedPlayerFromDb = null;
 
-    // Chiudi la chiamata attiva e preparati al prossimo
     cancelCall();
 
     saveToLocalStorage();
@@ -493,10 +532,6 @@ function renderCompactView() {
     html += `</tr></tbody></table>`;
     container.innerHTML = html;
 }
-
-window.onload = function() {
-    setViewMode('cards');
-};
 
 window.onload = function() {
     setViewMode('cards');
