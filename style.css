@@ -11,11 +11,10 @@
     --text-muted: #64748b;
     --border: #e2e8f0;
     
-    /* Colori Ruoli Fantacalcio */
-    --role-p: #eab308; /* Giallo Portieri */
-    --role-d: #16a34a; /* Verde Difesa */
-    --role-c: #0284c7; /* Azzurro Centrocampo */
-    --role-a: #dc2626; /* Rosso Attacco */
+    --role-p: #eab308;
+    --role-d: #16a34a;
+    --role-c: #0284c7;
+    --role-a: #dc2626;
 }
 
 * {
@@ -99,6 +98,123 @@ button {
 .btn-danger { background-color: #fee2e2; color: var(--danger); border: 1px solid #fca5a5; }
 .btn-danger:hover { background-color: #fecaca; }
 
+/* STILE ASTA LIVE (NUOVO) */
+.live-auction-panel {
+    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+    padding: 16px;
+    border-radius: 12px;
+    border: 2px solid var(--accent);
+    margin-bottom: 16px;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.panel-header h2 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+}
+
+.hotkey-tip {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.auction-controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.control-group input { width: 70px; }
+
+.btn-call {
+    font-size: 14px;
+    padding: 10px 18px;
+    background-color: #16a34a;
+}
+.btn-call:hover { background-color: #15803d; }
+
+/* Active Player Display */
+.active-player-card {
+    margin-top: 14px;
+    padding: 14px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.player-calling-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.active-team-logo { width: 36px; height: 36px; object-fit: contain; }
+.player-calling-info h3 { font-size: 18px; color: var(--primary); }
+.club-name { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-left: 6px; }
+
+.timer-display {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.countdown-number {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--danger);
+    background: #fee2e2;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--danger);
+}
+
+.btn-raise {
+    background-color: #d97706;
+    color: white;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 8px;
+    animation: pulse 1.5s infinite;
+}
+.btn-raise:hover { background-color: #b45309; }
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+.live-actions { display: flex; gap: 8px; }
+
+/* PANNELLO FORM REGISTRAZIONE */
 .auction-panel {
     background: var(--bg-card);
     padding: 14px 18px;
@@ -149,7 +265,7 @@ button {
 .autocomplete-item:hover { background-color: #f8fafc; }
 .team-logo { width: 18px; height: 18px; object-fit: contain; }
 
-/* SCROLL ORIZZONTALE SCHEDE SQUADRE COMPATTE */
+/* SCHEDE COMPATTE SQUADRE */
 .teams-container {
     display: flex;
     overflow-x: auto;
@@ -219,13 +335,12 @@ button {
 
 .role-header:hover { background-color: #f1f5f9; }
 
-/* Badge Ruoli con Colori */
 .role-badge {
     width: 18px;
     height: 18px;
     border-radius: 4px;
     color: white;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     font-size: 10px;
@@ -264,7 +379,7 @@ button {
 .delete-btn { background: transparent; color: var(--danger); font-size: 10px; padding: 0; }
 .delete-btn:hover { background: transparent; text-decoration: underline; }
 
-/* SCROLL ORIZZONTALE VISTA COMPATTA */
+/* VISTA COMPATTA */
 .compact-container {
     overflow-x: auto;
     background: white;
