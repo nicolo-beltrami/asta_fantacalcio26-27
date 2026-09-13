@@ -263,6 +263,7 @@ const PLAYERS_DB = [
     { name: "Gomes", role: "D", team: "venezia" },
     { name: "Idrissi", role: "D", team: "cagliari" },
     { name: "Paz", role: "D", team: "sassuolo" },
+    { name: "Aurelio", role: "D", team: "cagliari" },
     { name: "Ziolkowski", role: "D", team: "monza" },
 
     // CENTROCAMPISTI
@@ -428,7 +429,6 @@ const PLAYERS_DB = [
     { name: "Thorir Helgason", role: "C", team: "venezia" },
     { name: "Luca Lipani", role: "C", team: "sassuolo" },
     { name: "Anass Salah-Eddine", role: "C", team: "roma" },
-    { name: "Aurelio", role: "C", team: "cagliari" },
     { name: "Reda Belahyane", role: "C", team: "lazio" },
     { name: "Daniel Boloca", role: "C", team: "sassuolo" },
     { name: "Giorgi Chakvetadze", role: "C", team: "udinese" },
