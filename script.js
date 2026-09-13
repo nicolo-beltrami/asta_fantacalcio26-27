@@ -15,6 +15,7 @@ const ROLE_COLORS = {
 };
 
 let teams = JSON.parse(localStorage.getItem('fanta_teams')) || [];
+let unsoldPlayersMap = JSON.parse(localStorage.getItem('fanta_unsold_map')) || {}; // Tracciamento conteggio Unsold
 let currentViewMode = 'cards';
 let selectedPlayerFromDb = null;
 
@@ -26,6 +27,10 @@ let isAudioMuted = false; // Stato per attivare/disattivare l'audio
 
 // Web Audio API per generare i beep senza file esterni
 let audioCtx = null;
+
+function saveUnsoldToLocalStorage() {
+    localStorage.setItem('fanta_unsold_map', JSON.stringify(unsoldPlayersMap));
+}
 
 function initAudio() {
     if (!audioCtx) {
@@ -132,6 +137,7 @@ function callRandomPlayer() {
     const role = document.getElementById('auctionRoleSelect').value;
     const purchasedNames = getAllPurchasedPlayerNames();
 
+    // 1. Filtra i giocatori non ancora acquistati
     let availablePlayers = PLAYERS_DB.filter(p => !purchasedNames.has(p.name.toLowerCase()));
 
     if (role !== 'ALL') {
@@ -143,8 +149,24 @@ function callRandomPlayer() {
         return;
     }
 
-    const randomIndex = Math.floor(Math.random() * availablePlayers.length);
-    currentCalledPlayer = availablePlayers[randomIndex];
+    // 2. Calcola il numero minimo di chiamate (unsold count) tra i giocatori disponibili
+    let minCalls = Infinity;
+    availablePlayers.forEach(p => {
+        const count = unsoldPlayersMap[p.name.toLowerCase()] || 0;
+        if (count < minCalls) {
+            minCalls = count;
+        }
+    });
+
+    // 3. Filtra solo i giocatori con il punteggio minimo (dà la precedenza assoluta a chi ha 0 uscite)
+    const priorityPool = availablePlayers.filter(p => {
+        const count = unsoldPlayersMap[p.name.toLowerCase()] || 0;
+        return count === minCalls;
+    });
+
+    // 4. Estrazione casuale dal gruppo prioritario
+    const randomIndex = Math.floor(Math.random() * priorityPool.length);
+    currentCalledPlayer = priorityPool[randomIndex];
 
     document.getElementById('activePlayerCard').style.display = 'flex';
     document.getElementById('activePlayerName').textContent = currentCalledPlayer.name;
@@ -212,7 +234,13 @@ function cancelCall() {
     selectedPlayerFromDb = null;
 }
 
+// MARCA IL GIOCATORE COME UNSOLD E INCREMENTA IL SUO CONTATORE DI CHIAMATE
 function markAsUnsold() {
+    if (currentCalledPlayer) {
+        const pId = currentCalledPlayer.name.toLowerCase();
+        unsoldPlayersMap[pId] = (unsoldPlayersMap[pId] || 0) + 1;
+        saveUnsoldToLocalStorage();
+    }
     cancelCall();
 }
 
@@ -396,7 +424,9 @@ function exportToCSV() {
 function resetAll() {
     if (confirm("ATTENZIONE: Sei sicuro di voler azzerare l'intera asta? Tutti i dati verranno cancellati!")) {
         teams = [];
+        unsoldPlayersMap = {};
         localStorage.removeItem('fanta_teams');
+        localStorage.removeItem('fanta_unsold_map');
         updateUI();
     }
 }
@@ -409,7 +439,7 @@ function toggleCreditsSidebar() {
     }
 }
 
-// AGGIORNAMENTO DINAMICO SIDEBAR CREDITI (F1 Style Leaderboard)
+// AGGIORNAMENTO DINAMICO SIDEBAR CREDITI (Leaderboard)
 function updateCreditsSidebar() {
     const leaderboardList = document.getElementById('creditsLeaderboard');
     if (!leaderboardList) return;
