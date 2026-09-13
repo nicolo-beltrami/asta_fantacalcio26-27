@@ -260,6 +260,7 @@ const PLAYERS_DB = [
     { name: "Omar Fayed", role: "D", team: "frosinone" },
     { name: "Arizala", role: "D", team: "udinese" },
     { name: "Gomes", role: "D", team: "venezia" },
+    { name: "Idrissi", role: "D", team: "cagliari" },
     { name: "Paz", role: "D", team: "sassuolo" },
     { name: "Ziolkowski", role: "D", team: "monza" },
 
@@ -432,7 +433,6 @@ const PLAYERS_DB = [
     { name: "Giorgi Chakvetadze", role: "C", team: "udinese" },
     { name: "Oussama El Azzouzi", role: "C", team: "bologna" },
     { name: "Amario Cozier-Duberry", role: "C", team: "monza" },
-    { name: "Idrissi", role: "C", team: "cagliari" },
     { name: "Lukas Ilic", role: "C", team: "lecce" },
     { name: "Massolin", role: "C", team: "cagliari" },
     { name: "Stefano Sabelli", role: "C", team: "genoa" },
