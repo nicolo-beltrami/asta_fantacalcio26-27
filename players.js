@@ -472,6 +472,7 @@ const PLAYERS_DB = [
     { name: "Przyborek", role: "C", team: "lazio" },
     { name: "Wiafe", role: "C", team: "genoa" },
     { name: "Dabo", role: "C", team: "venezia" },
+    { name: "Laerke", role: "C", team: "lecce" },
     
 
     // ATTACCANTI
@@ -566,7 +567,6 @@ const PLAYERS_DB = [
     { name: "Nicholas Pierini", role: "A", team: "sassuolo" },
     { name: "Skjellerup", role: "A", team: "sassuolo" },
     { name: "De Martis", role: "A", team: "parma" },
-    { name: "Laerke", role: "A", team: "lecce" },
     { name: "Lauberbach", role: "A", team: "venezia" },
     { name: "Sugamele", role: "A", team: "cagliari" },
     { name: "Trepy", role: "A", team: "cagliari" },
