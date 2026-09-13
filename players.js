@@ -464,6 +464,7 @@ const PLAYERS_DB = [
     { name: "Fernandez", role: "A", team: "venezia" },
     { name: "Seydou Fini", role: "C", team: "frosinone" },
     { name: "Dominguez", role: "C", team: "sassuolo" },
+    { name: "Omari Forson", role: "C", team: "monza" },
     { name: "Lahdo", role: "C", team: "como" },
     { name: "Diallo Thiao", role: "C", team: "parma" },
     { name: "Liteta", role: "C", team: "cagliari" },
